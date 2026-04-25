@@ -12,6 +12,8 @@ terraform {
 provider "azuread" {}
 
 # 3. The Resource Block
-resource "azuread_application" "my_app" {
-  display_name = "MotherFucker001"
+resource "azuread_user" "my_user" {
+  user_principal_name = "ankitapriya@sanjeevkumar00045gmail.onmicrosoft.com"
+  display_name        = "AnkitaPriya"
+  password            = "SecretPassword123!"
 }
