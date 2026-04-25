@@ -12,8 +12,19 @@ terraform {
 provider "azuread" {}
 
 # 3. The Resource Block
-resource "azuread_user" "my_user" {
+# 1. Look up the existing Group
+data "azuread_group" "target_group" {
+  display_name     = "TestGroup"
+  security_enabled = true
+}
+
+# 2. Look up the existing User
+data "azuread_user" "target_user" {
   user_principal_name = "ankitapriya@sanjeevkumar00045gmail.onmicrosoft.com"
-  display_name        = "AnkitaPriya"
-  password            = "SecretPassword123!"
+}
+
+# 3. Add the User to the Group
+resource "azuread_group_member" "example" {
+  group_object_id  = data.azuread_group.target_group.id
+  member_object_id = data.azuread_user.target_user.id
 }
