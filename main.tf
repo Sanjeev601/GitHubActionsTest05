@@ -1,30 +1,21 @@
-# 1. The Provider Block
-terraform {
-  required_providers {
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 2.0"
-    }
-  }
-}
-
-# 2. The Configuration Block
-provider "azuread" {}
-
-# 3. The Resource Block
-# 1. Look up the existing Group
+# 1. Search for the Group by its name
 data "azuread_group" "target_group" {
   display_name     = "KingsKnights"
   security_enabled = true
 }
 
-# 2. Look up the existing User
-data "azuread_user" "target_user" {
-  user_principal_name = "ankitapriya@sanjeevkumar00045gmail.onmicrosoft.com"
+# 2. Get the list of Member IDs from that group
+data "azuread_group_members" "all_members" {
+  group_object_id = data.azuread_group.target_group.id
 }
 
-# 3. Add the User to the Group
-resource "azuread_group_member" "example" {
-  group_object_id  = data.azuread_group.target_group.id
-  member_object_id = data.azuread_user.target_user.id
+# 3. Look up the User details for those specific IDs
+data "azuread_users" "member_details" {
+  object_ids = data.azuread_group_members.all_members.members
+}
+
+# 4. Display the names in the console
+output "group_member_names" {
+  description = "The display names of the members in KingsKnights"
+  value       = data.azuread_users.member_details.display_names
 }
