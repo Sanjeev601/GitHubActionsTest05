@@ -14,7 +14,7 @@ provider "azuread" {}
 # 3. The Resource Block
 # 1. Look up the existing Group
 data "azuread_group" "target_group" {
-  display_name     = "TestGroup"
+  display_name     = "KingsKnights"
   security_enabled = true
 }
 
