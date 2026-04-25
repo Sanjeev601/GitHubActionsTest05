@@ -1,4 +1,18 @@
-# 1. Search for the Group by its name
+# 1. The Provider Block
+terraform {
+  required_providers {
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.0"
+    }
+  }
+}
+
+# 2. The Configuration Block
+provider "azuread" {}
+
+# 3. The Resource Block
+
 data "azuread_group" "target_group" {
   display_name     = "KingsKnights"
   security_enabled = true
